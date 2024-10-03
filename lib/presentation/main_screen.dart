@@ -28,6 +28,10 @@ class _KillLogScreenState extends State<KillLogScreen> {
     {'team': '16 팀', 'live': 4},
   ];
 
+  // 남은 인원 수를 어떤 식으로 해야할 지 모루겠다. 일단 default 64명~
+  int totalLive = 64;
+  int totalDead = 0;
+
   // 현재 상태 저장하는 리스트
   List<Map<String, dynamic>> items = [];
 
@@ -45,6 +49,10 @@ class _KillLogScreenState extends State<KillLogScreen> {
         // 클릭할때마다 live 감소
         items[index]['live']--;
       }
+
+      // 사망한 인원은 1씩 늘어나고 생존인원은 1씩 줄어듦
+      totalLive--;
+      totalDead++;
     });
   }
 
@@ -64,6 +72,19 @@ class _KillLogScreenState extends State<KillLogScreen> {
       ),
       body: Column(
         children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 24.0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text('$totalDead 명 사망'),
+                  Text('$totalLive 명 생존'),
+                ],
+              ),
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 24.0),
