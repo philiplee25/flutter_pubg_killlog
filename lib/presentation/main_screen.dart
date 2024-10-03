@@ -60,11 +60,22 @@ class _KillLogScreenState extends State<KillLogScreen> {
   void resetItems() {
     setState(() {
       items = initItems.map((item) => Map<String, dynamic>.from(item)).toList();
+      totalLive = 64;
+      totalDead = 0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // 현재 화면 크기 가져오기
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    // grid 한 칸의 높이 및 너비 계산
+    final double gridHeight = screenHeight * 0.7; // 화면 높이의 50%를 GridView로 설정
+    final double gridItemWidth = screenWidth / 4; // 4x4 그리드이므로 4로 나눔
+    final double gridItemHeight = gridHeight / 4; // 4x4 그리드이므로 4로 나눔
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -85,12 +96,15 @@ class _KillLogScreenState extends State<KillLogScreen> {
               ),
             ),
           ),
-          Expanded(
+          SizedBox(
+            height: gridHeight, // GridView의 높이를 고정
             child: Padding(
               padding: const EdgeInsets.only(top: 24.0),
               child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4, // 4개의 열로 구성
+                  childAspectRatio:
+                      gridItemWidth / gridItemHeight, // grid 한 칸의 비율 설정
                 ),
                 itemCount: 16,
                 itemBuilder: (context, index) {
